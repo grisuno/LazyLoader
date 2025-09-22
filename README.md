@@ -122,9 +122,9 @@ Educational & Red Team Use Only. Not for malicious exploitation.
 ## 📬 Contact / Contribution
 For bugs, suggestions, or contributions — open an issue or submit a PR.
 
-Author: grisun0 - LazyOwn RedTeam
-Version: release/v0.0.1
-Year: 2025 
+- Author: grisun0 - LazyOwn RedTeam
+- Version: release/v0.0.1
+- Year: 2025 
 
 ## ⚠️ Legal Notice
 This software is for authorized penetration testing and research purposes only. Misuse of this tool can result in criminal prosecution. The author(s) assume no liability and are not responsible for any misuse or damage caused by this program.
