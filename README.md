@@ -136,6 +136,16 @@ This software is for authorized penetration testing and research purposes only. 
 
 ✅ Stay LazyOwn. Stay Stealthy.
 
+## 🔗 LINKS (BEFORE THIS ARTICLE SELF-DESTRUCTS)
+
+- 🐙 GitHub: https://github.com/grisuno/LazyLoader/
+- 🐙 GitHub: https://github.com/grisuno/LazyOwn/
+- 🧠 Framework: https://grisuno.github.io/LazyOwn/
+- 💬 Discord: https://discord.gg/V3usU8yH
+- 🧑‍💻 HTB: https://app.hackthebox.com/users/1998024
+- ☕ Ko-fi: https://ko-fi.com/Y8Y2Z73AV (Buy us coffee. We’ll use it to compile more chaos.)
+
+
 ![Python](https://img.shields.io/badge/python-3670A0?style=for-the-badge&logo=python&logoColor=ffdd54) ![Shell Script](https://img.shields.io/badge/shell_script-%23121011.svg?style=for-the-badge&logo=gnu-bash&logoColor=white) ![Flask](https://img.shields.io/badge/flask-%23000.svg?style=for-the-badge&logo=flask&logoColor=white) [![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
 
 [![ko-fi](https://ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/Y8Y2Z73AV)
