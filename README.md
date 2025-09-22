@@ -16,12 +16,17 @@ LazyLoader is a sophisticated, in-memory Windows PE (Portable Executable) loader
 - Optionally unhooks ntdll.dll by restoring its .text section from a clean process (e.g., notepad.exe) to evade EDR/userland hooks.
 - Designed for stealth, LazyLoader leaves no trace on disk and hides its execution context from command-line inspection tools.
 
+<img width="1218" height="450" alt="image" src="https://github.com/user-attachments/assets/b7c17134-fdfb-4806-9c1e-1e1a098c475b" />
+
 ## ⚙️ Features
 - ✅ Remote Payload Fetching
 Uses WinHTTP to securely download encrypted PE and key files from a remote server.
 
 ## ✅ AES-256 Decryption
 - Leverages Windows CryptAcquireContext, CryptCreateHash, and CryptDecrypt for secure in-memory decryption.
+
+<img width="1219" height="181" alt="image" src="https://github.com/user-attachments/assets/9c3b89a2-d87d-464e-a865-49eca5afc7b8" />
+
 
 ## ✅ Reflective PE Loading
 
