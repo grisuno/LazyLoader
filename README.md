@@ -84,7 +84,9 @@ encrypted = cipher.encrypt(data.ljust((len(data) // 16 + 1) * 16, b'\x00'))  # P
 with open("evil.bin", "wb") as f:
     f.write(encrypted)
 ```
-🔍 Note: LazyLoader uses SHA-256 to hash the key file contents before deriving the AES key — ensure your encryption matches this behavior. 
+## 🔍 Notes: 
+- LazyLoader uses SHA-256 to hash the key file contents before deriving the AES key — ensure your encryption matches this behavior.
+- I only translate to C from C++ ( https://github.com/d1rkmtrr/FilelessPELoader/ ), because i like more C xd, and to learn, and this version compile in linux :D
 
 ## 🧪 Compilation
 Requirements
