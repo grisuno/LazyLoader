@@ -2,6 +2,7 @@
 
 <img width="1024" height="1024" alt="image" src="https://github.com/user-attachments/assets/f4cc6e4e-65fc-44f9-b2f8-3228e3876d06" />
 
+- [CompressLoader](https://github.com/grisuno/CompressLoader): the next generaion of this tool is here. [https://github.com/grisuno/CompressLoader](https://github.com/grisuno/CompressLoader)
 
 Disclaimer: This tool is intended for educational purposes and authorized red team operations only. Do not use on systems you do not own or have explicit permission to test. 
 
