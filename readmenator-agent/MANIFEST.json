@@ -1,0 +1,26 @@
+{
+  "tool": "readmenator",
+  "generated_at": "2026-09-17T04:07:55Z",
+  "project_root": "/tmp/push_LazyLoader_20260917_010128",
+  "files": 4,
+  "symbols": 36,
+  "imports": 23,
+  "resolved_imports": 0,
+  "security_findings": 0,
+  "languages": {
+    "py": 2,
+    "sh": 1,
+    "c": 1
+  },
+  "entrypoints": [
+    "main.c"
+  ],
+  "start_here": "INDEX.md",
+  "workflow": [
+    "ls *.md readmenator-*/  # orient: docs first, ignore build noise",
+    "grep -n '<keyword>' INDEX.md",
+    "cat KB_<subsystem>.md",
+    "grep -n '<file>' ARCHITECTURE.md SYMBOLS.md"
+  ],
+  "regenerate": "readmenator . --rebuild"
+}
